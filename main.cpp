@@ -13,10 +13,6 @@ int main()
 	RenderWindow window(VideoMode(areaSize.first * segmentSize, areaSize.second * segmentSize), "Snake");
 	Direction dir = Direction::Up;
 	clock_t last_clock = clock();
-	RectangleShape bodySegment(Vector2f(segmentSize, segmentSize));
-	bodySegment.setFillColor(Color::Green);
-	CircleShape apple(segmentSize / 2);
-	apple.setFillColor(Color::Red);
 	vector<vector<int>> state;
 	while (true) {
 		event = Event();
@@ -48,10 +44,16 @@ int main()
 				for (int i = 0; i < areaSize.first; ++i) {
 					for (int j = 0; j < areaSize.second; ++j) {
 						if (state[i][j] == 1) {
+							RectangleShape bodySegment(Vector2f(segmentSize, segmentSize));
+							bodySegment.setFillColor(Color::Green);
+							bodySegment.setOutlineThickness(1);
+							bodySegment.setOutlineColor(Color::Black);
 							bodySegment.setPosition(Vector2f((float)(segmentSize * i), (float)(segmentSize * j)));
 							window.draw(bodySegment);
 						}
 						else if (state[i][j] == 2) {
+							CircleShape apple(segmentSize / 2);
+							apple.setFillColor(Color::Red);
 							apple.setPosition(Vector2f((float)(segmentSize * i), (float)(segmentSize * j)));
 							window.draw(apple);
 						}
@@ -60,7 +62,10 @@ int main()
 				window.display();
 			}
 		}
-		else break;
+		else {
+			window.close();
+			break;
+		};
 	}
 	cout << snake.Score();
 	return 0;

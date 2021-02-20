@@ -8,7 +8,7 @@ Snake::Snake(pair<int, int> size) {
 	this->CreateApple();
 }
 void Snake::Move(Direction direction) {
-	for (size_t i = 1; i < this->body.size(); ++i) {
+	for (int i = 1; i < this->body.size(); ++i) {
 		this->body[i - 1] = this->body[i];
 	}
 	int head = this->body.size() - 1;
@@ -37,8 +37,9 @@ void Snake::Move(Direction direction) {
 		this->score += 1;
 		this->CreateApple();
 	}
-	for (size_t i = 0; i < this->body.size(); ++i)
-		if (i != head && this->body[i] == this->body[head]) this->inGame = false;
+	head = this->body.size() - 1;
+	for (size_t i = 0; i < head; ++i)
+		if (this->body[i] == this->body[head]) this->inGame = false;
 }
 vector<vector<int>> Snake::State() {
 	vector<vector<int>> state(this->size.first, vector<int>(this->size.second, 0));
