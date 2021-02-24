@@ -1,10 +1,14 @@
 #include <SFML/Graphics.hpp>
 #include "Snake.h"
+#include "NN.h"
+#include <vector>
 #include <iostream>
 using namespace sf;
 using namespace std;
 int main()
 {
+	NN network(vector<int>({2, 5, 1}));
+	network.PrintStructure();
 	const int segmentSize = 30;
 	const pair<int, int> areaSize = make_pair(30, 20);
 	const float speed = 7;
@@ -18,7 +22,7 @@ int main()
 		event = Event();
 		while (window.pollEvent(event)) {
 			if (event.type == Event::Closed) window.close();
-			else {
+			else { // turns with arrow keys
 				switch (event.key.code) {
 				case 71:
 					dir = dir == Direction::Right ? dir : Direction::Left;

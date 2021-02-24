@@ -1,7 +1,7 @@
 #include <vector>
 using namespace std;
 struct Neuron {
-	vector<float> input;
+	float input;
 	vector<float> weights;
 	float output;
 };
@@ -13,4 +13,5 @@ private:
 public:
 	NN(vector<int> structure);
 	vector<float> FeedForward(vector<float> input);
+	void PrintStructure();
 };
