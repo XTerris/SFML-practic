@@ -7,7 +7,7 @@ using namespace sf;
 using namespace std;
 int main()
 {
-	NN network(vector<int>({2, 5, 1}));
+	NN network(vector<int>({2, 5, 3}));
 	vector<float> ans = network.FeedForward(vector<float>({0, 1}));
 	for (auto i : ans)
 		cout << i << " ";

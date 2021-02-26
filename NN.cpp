@@ -32,7 +32,7 @@ vector<float> NN::FeedForward(vector<float> input) {
 		else { // from second to last layers
 			for (int n = 0; n < this->structure[l].size(); ++n) { // each neuron
 				float sum = 0; // sum of last layer's outputs multiplied to weights
-				for (int i = 0; i < this->structure[l - 1].size(); ++n) { // each neuron of last layer
+				for (int i = 0; i < this->structure[l - 1].size(); ++i) { // each neuron of last layer
 					sum += this->structure[l - 1][i].output * this->structure[l][n].weights[i];
 				}
 				this->structure[l][n].input = sum;
