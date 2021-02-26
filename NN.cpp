@@ -4,16 +4,16 @@
 #include <iostream>
 using namespace std;
 float NN::Activation(float x) {
-	return x < 0 ? x * 0.01 : x; // Leaky ReLU
+	return x < 0 ? x * (float)0.01 : x; // Leaky ReLU
 }
 float NN::Derivative(float x) {
-	return x < 0 ? 0.01 : 1; // LeakyReLU's derivative
+	return x < 0 ? (float)0.01 : 1; // LeakyReLU's derivative
 }
 NN::NN(vector<int> structure) {
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 	for (auto l : structure) { // filling structure with neurons
 		this->structure.push_back(vector<Neuron>(l, Neuron()));
-		int size = this->structure.size(); // count of filled layers
+		size_t size = this->structure.size(); // count of filled layers
 		if (size == 1) continue; // if firts layer continue
 		for (auto &n : this->structure[size - 1]) { // else for each neuron
 			n.weights = vector<float>(this->structure[size - 2].size());
@@ -31,13 +31,19 @@ vector<float> NN::FeedForward(vector<float> input) {
 		}
 		else { // from second to last layers
 			for (int n = 0; n < this->structure[l].size(); ++n) { // each neuron
+				float sum = 0; // sum of last layer's outputs multiplied to weights
 				for (int i = 0; i < this->structure[l - 1].size(); ++n) { // each neuron of last layer
-
+					sum += this->structure[l - 1][i].output * this->structure[l][n].weights[i];
 				}
+				this->structure[l][n].input = sum;
+				this->structure[l][n].output = this->Activation(sum); // compute output signal
 			}
 		}
-		// calc outputs for each neuron
 	}
+	vector<float> output(this->structure[this->structure.size() - 1].size());
+	for (int i = 0; i <= output.size(); ++i)
+		output[i] = this->structure[this->structure.size() - 1][i].output;
+	return output;
 }
 void NN::PrintStructure() {
 	for (auto l : this->structure) {

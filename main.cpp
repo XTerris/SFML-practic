@@ -8,7 +8,10 @@ using namespace std;
 int main()
 {
 	NN network(vector<int>({2, 5, 1}));
-	network.PrintStructure();
+	vector<float> ans = network.FeedForward(vector<float>({0, 1}));
+	for (auto i : ans)
+		cout << i << " ";
+	return 0;
 	const int segmentSize = 30;
 	const pair<int, int> areaSize = make_pair(30, 20);
 	const float speed = 7;

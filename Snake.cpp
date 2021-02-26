@@ -11,7 +11,7 @@ void Snake::Move(Direction direction) {
 	for (int i = 1; i < this->body.size(); ++i) {
 		this->body[i - 1] = this->body[i]; // moving segments without head
 	}
-	int head = this->body.size() - 1;
+	size_t head = this->body.size() - 1;
 	switch (direction) { // moving of head
 		case Direction::Up:
 			if (this->body[head].second == 0) inGame = false;
@@ -50,7 +50,7 @@ vector<vector<int>> Snake::State() {
 	return state;
 }
 void Snake::CreateApple() {
-	srand(time(0));
+	srand((unsigned int)time(NULL));
 	while (true) {
 		pair<int, int> t = make_pair(rand() % this->size.first, rand() % this->size.second);
 		if (this->State()[t.first][t.second] != 1) { // if apple on snake create it again
