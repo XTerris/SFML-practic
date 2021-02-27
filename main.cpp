@@ -7,9 +7,8 @@ using namespace sf;
 using namespace std;
 int main()
 {
-	NN network(vector<int>({2, 5, 3}));
-	vector<float> ans = network.FeedForward(vector<float>({0, 1}));
-	for (auto i : ans)
+	NN n({2, 5, 3});
+	for (auto i : n.FeedForward(vector<float>({ 1, 0 })))
 		cout << i << " ";
 	return 0;
 	const int segmentSize = 30;
