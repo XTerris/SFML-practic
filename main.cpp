@@ -6,18 +6,21 @@
 #include <iostream>
 using namespace sf;
 using namespace std;
-void Draw(RenderWindow& window, Snake& snake, const float segmentSize, int moveProgress) {
+void Draw(RenderWindow& window, Snake& snake, const float segmentSize, float moveProgress) {
 	const int scoreMargin = 2;
 	window.clear();
 	RectangleShape bodySegment(Vector2f(segmentSize, segmentSize));
 	bodySegment.setFillColor(Color::Green);
-	bodySegment.setOutlineThickness(1);
-	bodySegment.setOutlineColor(Color::Black);
 	for (size_t i = 1; i < snake.body.size() - 1; ++i) {
 		bodySegment.setPosition(Vector2f(segmentSize * snake.body[i].pos.first, segmentSize * (snake.body[i].pos.second + scoreMargin)));
 		window.draw(bodySegment);
 	}
-
+	Segment head = snake.body[snake.body.size() - 1];
+	if (head.dir == Direction::Down || head.dir == Direction::Up) {
+		bodySegment.setSize(Vector2f(segmentSize, segmentSize * moveProgress));
+	}
+	if (head.dir == Direction::Up) bodySegment.setPosition(Vector2f(segmentSize * head.pos.first, segmentSize * (head.pos.second + scoreMargin - moveProgress + 1)));
+	window.draw(bodySegment);
 	// TODO: draw head and tail
 
 	CircleShape apple(segmentSize / 2);
@@ -41,7 +44,7 @@ int main()
 	const pair<int, int> areaSize = make_pair(30, 20);
 	const int segmentSize = 30;
 	const int scoreMargin = 2;
-	const int speed = 7;
+	const float speed = 0.5;
 	bool pause = false;
 	bool active = true;
 	Snake snake(areaSize);
@@ -73,12 +76,12 @@ int main()
 			else if (Keyboard::isKeyPressed(Keyboard::Pause)) pause = !pause;
 		}
 		if (snake.inGame && !pause) {
-			if (moveTimer.getElapsedTime().asMilliseconds() >= 1000 / (float)speed / segmentSize) {
-				if (timer.getElapsedTime().asMilliseconds() >= 1000 / (float)speed) {
+			if (moveTimer.getElapsedTime().asMilliseconds() >= 1000 / speed / segmentSize) {
+				if (timer.getElapsedTime().asMilliseconds() >= 1000 / speed) {
 					snake.Move(dir);
 					timer.restart();
 				}
-				Draw(window, snake, segmentSize, timer.getElapsedTime().asMicroseconds() / (1000000 / speed / segmentSize));
+				Draw(window, snake, segmentSize, timer.getElapsedTime().asMilliseconds() / (float)1000 * speed);
 				moveTimer.restart();
 			}
 		}
