@@ -34,7 +34,7 @@ void Draw(RenderWindow& window, Snake& snake, const float segmentSize) {
 	Font font;
 	font.loadFromFile("Font.ttf");
 	Text score("", font, (unsigned int)segmentSize * scoreMargin - 10);
-	score.setString("Score: " + to_string(snake.Score()));
+	score.setString("Score: " + to_string(snake.Score));
 	score.setFillColor(Color::White);
 	score.setPosition(Vector2f(10, 0));
 	window.draw(score);
