@@ -6,38 +6,35 @@
 #include <iostream>
 using namespace sf;
 using namespace std;
-void Draw(RenderWindow& window, Snake& snake, const float segmentSize, bool All = true) {
-	if (All) {
-		const int scoreMargin = 2;
-		window.clear();
-		for (size_t i = 0; i < snake.body.size(); ++i) {
-
-			RectangleShape bodySegment(Vector2f(segmentSize, segmentSize));
-			bodySegment.setFillColor(Color::Green);
-			bodySegment.setOutlineThickness(1);
-			bodySegment.setOutlineColor(Color::Black);
-			bodySegment.setPosition(Vector2f(segmentSize * snake.body[i].pos.first, segmentSize * (snake.body[i].pos.second + scoreMargin)));
-			window.draw(bodySegment);
-		}
-		CircleShape apple(segmentSize / 2);
-		apple.setFillColor(Color::Red);
-		apple.setPosition(Vector2f(segmentSize * snake.apple.first, segmentSize * (snake.apple.second + scoreMargin)));
-		window.draw(apple);
-		RectangleShape interface(Vector2f(segmentSize * snake.size.first, scoreMargin * segmentSize));
-		interface.setFillColor(Color(28, 28, 28));
-		window.draw(interface);
-		Font font;
-		font.loadFromFile("Font.ttf");
-		Text score("", font, (unsigned int)segmentSize * scoreMargin - 10);
-		score.setString("Score: " + to_string(snake.Score));
-		score.setFillColor(Color::White);
-		score.setPosition(Vector2f(10, 0));
-		window.draw(score);
-		window.display();
+void Draw(RenderWindow& window, Snake& snake, const float segmentSize, int moveProgress) {
+	const int scoreMargin = 2;
+	window.clear();
+	RectangleShape bodySegment(Vector2f(segmentSize, segmentSize));
+	bodySegment.setFillColor(Color::Green);
+	bodySegment.setOutlineThickness(1);
+	bodySegment.setOutlineColor(Color::Black);
+	for (size_t i = 1; i < snake.body.size() - 1; ++i) {
+		bodySegment.setPosition(Vector2f(segmentSize * snake.body[i].pos.first, segmentSize * (snake.body[i].pos.second + scoreMargin)));
+		window.draw(bodySegment);
 	}
-	else {
 
-	}
+	// TODO: draw head and tail
+
+	CircleShape apple(segmentSize / 2);
+	apple.setFillColor(Color::Red);
+	apple.setPosition(Vector2f(segmentSize * snake.apple.first, segmentSize * (snake.apple.second + scoreMargin)));
+	window.draw(apple);
+	RectangleShape interface(Vector2f(segmentSize * snake.size.first, scoreMargin * segmentSize));
+	interface.setFillColor(Color(28, 28, 28));
+	window.draw(interface);
+	Font font;
+	font.loadFromFile("Font.ttf");
+	Text score("", font, (unsigned int)segmentSize * scoreMargin - 10);
+	score.setString("Score: " + to_string(snake.Score));
+	score.setFillColor(Color::White);
+	score.setPosition(Vector2f(10, 0));
+	window.draw(score);
+	window.display();
 }
 int main()
 {
@@ -53,6 +50,7 @@ int main()
 	RenderWindow window(VideoMode(areaSize.first * segmentSize, (areaSize.second + scoreMargin) * segmentSize), "Snake", Style::Default, settings);
 	Direction dir = Direction::Up;
 	Clock timer;
+	Clock moveTimer;
 	while (active) {
 		Event event = Event();
 		while (window.pollEvent(event)) {
@@ -75,10 +73,13 @@ int main()
 			else if (Keyboard::isKeyPressed(Keyboard::Pause)) pause = !pause;
 		}
 		if (snake.inGame && !pause) {
-			if (timer.getElapsedTime().asMilliseconds() > 1000 / (float)speed) {
-				snake.Move(dir);
-				Draw(window, snake, segmentSize);
-				timer.restart();
+			if (moveTimer.getElapsedTime().asMilliseconds() >= 1000 / (float)speed / segmentSize) {
+				if (timer.getElapsedTime().asMilliseconds() >= 1000 / (float)speed) {
+					snake.Move(dir);
+					timer.restart();
+				}
+				Draw(window, snake, segmentSize, timer.getElapsedTime().asMicroseconds() / (1000000 / speed / segmentSize));
+				moveTimer.restart();
 			}
 		}
 	}
