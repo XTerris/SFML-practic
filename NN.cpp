@@ -24,17 +24,17 @@ NN::NN(vector<int> structure) {
 vector<float> NN::FeedForward(vector<float> input) {
 	if (input.size() != this->structure[0].size()) // throw exception if input is of invalid size
 		throw invalid_argument("Invalid size of input");
-	for (int l = 0; l < this->structure.size(); ++l) { // each layer
+	for (size_t l = 0; l < this->structure.size(); ++l) { // each layer
 		if (l == 0) { // first layer
-			for (int i = 0; i < input.size(); ++i) { // each neuron
+			for (size_t i = 0; i < input.size(); ++i) { // each neuron
 				this->structure[0][i].input = input[i]; // set inputs
 				this->structure[0][i].output = this->Activation(input[i]);
 			}
 		}
 		else { // from second to last layers
-			for (int n = 0; n < this->structure[l].size(); ++n) {
+			for (size_t n = 0; n < this->structure[l].size(); ++n) {
 				float sum = 0;
-				for (int i = 0; i < this->structure[l - 1].size(); ++i)
+				for (size_t i = 0; i < this->structure[l - 1].size(); ++i)
 					sum += this->structure[l - 1][i].output * this->structure[l][n].weights[i];
 				this->structure[l][n].input = sum;
 				this->structure[l][n].output = this->Activation(sum);
@@ -42,7 +42,7 @@ vector<float> NN::FeedForward(vector<float> input) {
 		}
 	}
 	vector<float> output(this->structure[this->structure.size() - 1].size());
-	for (int i = 0; i < output.size(); ++i)
+	for (size_t i = 0; i < output.size(); ++i)
 		output[i] = this->structure[this->structure.size() - 1][i].output;
 	return output;	
 }
