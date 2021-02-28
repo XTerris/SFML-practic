@@ -1,27 +1,56 @@
+#pragma once
 #include <SFML/Graphics.hpp>
 #include "Snake.h"
 #include "NN.h"
 #include <vector>
-#include <iostream>
 using namespace sf;
 using namespace std;
+void Draw(RenderWindow& window, Snake& snake, const float segmentSize) {
+	vector<vector<int>> state = snake.State();
+	const float scoreMargin = 2;
+	window.clear();
+	for (size_t i = 0; i < state.size(); ++i) {
+		for (size_t j = 0; j < state[0].size(); ++j) {
+			if (state[i][j] == 1) {
+				RectangleShape bodySegment(Vector2f(segmentSize, segmentSize));
+				bodySegment.setFillColor(Color::Green);
+				bodySegment.setOutlineThickness(1);
+				bodySegment.setOutlineColor(Color::Black);
+				bodySegment.setPosition(Vector2f(segmentSize * i, segmentSize * (j + scoreMargin)));
+				window.draw(bodySegment);
+			}
+			else if (state[i][j] == 2) {
+				CircleShape apple(segmentSize / 2);
+				apple.setFillColor(Color::Red);
+				apple.setPosition(Vector2f(segmentSize * i, segmentSize * (j + scoreMargin)));
+				window.draw(apple);
+			}
+		}
+	}
+	RectangleShape interface(Vector2f(segmentSize * state.size(), scoreMargin * segmentSize));
+	interface.setFillColor(Color(28, 28, 28));
+	window.draw(interface);
+	Font font;
+	font.loadFromFile("Font.ttf");
+	Text score("", font, segmentSize * scoreMargin - 10);
+	score.setString("Score: " + to_string(snake.Score()));
+	score.setFillColor(Color::White);
+	score.setPosition(Vector2f(10, 0));
+	window.draw(score);
+	window.display();
+}
 int main()
 {
-	NN n({2, 5, 3});
-	for (auto i : n.FeedForward(vector<float>({ 1, 0 })))
-		cout << i << " ";
-	return 0;
-	const int segmentSize = 30;
 	const pair<int, int> areaSize = make_pair(30, 20);
 	const float speed = 7;
-	Event event;
+	const int segmentSize = 30;
+	const int scoreMargin = 2;
 	Snake snake(areaSize);
-	RenderWindow window(VideoMode(areaSize.first * segmentSize, areaSize.second * segmentSize), "Snake");
+	RenderWindow window(VideoMode(areaSize.first * segmentSize, (areaSize.second + scoreMargin) * segmentSize), "Snake");
 	Direction dir = Direction::Up;
 	clock_t last_clock = clock();
-	vector<vector<int>> state;
 	while (true) {
-		event = Event();
+		Event event = Event();
 		while (window.pollEvent(event)) {
 			if (event.type == Event::Closed) window.close();
 			else { // turns with arrow keys
@@ -45,27 +74,7 @@ int main()
 			if ((float)(clock() - last_clock) / CLOCKS_PER_SEC > 1.0 / speed) {
 				snake.Move(dir);
 				last_clock = clock();
-				window.clear();
-				state = snake.State();
-				for (int i = 0; i < areaSize.first; ++i) {
-					for (int j = 0; j < areaSize.second; ++j) {
-						if (state[i][j] == 1) {
-							RectangleShape bodySegment(Vector2f(segmentSize, segmentSize));
-							bodySegment.setFillColor(Color::Green);
-							bodySegment.setOutlineThickness(1);
-							bodySegment.setOutlineColor(Color::Black);
-							bodySegment.setPosition(Vector2f((float)(segmentSize * i), (float)(segmentSize * j)));
-							window.draw(bodySegment);
-						}
-						else if (state[i][j] == 2) {
-							CircleShape apple(segmentSize / 2);
-							apple.setFillColor(Color::Red);
-							apple.setPosition(Vector2f((float)(segmentSize * i), (float)(segmentSize * j)));
-							window.draw(apple);
-						}
-					}
-				}
-				window.display();
+				Draw(window, snake, segmentSize);
 			}
 		}
 		else {
@@ -73,6 +82,5 @@ int main()
 			break;
 		};
 	}
-	cout << snake.Score();
 	return 0;
 }
