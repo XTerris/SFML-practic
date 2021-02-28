@@ -47,7 +47,7 @@ vector<float> NN::FeedForward(vector<float> input) {
 	return output;	
 }
 vector<float> getMSE(vector<float> input, vector<float> right_output) {
-	// compute and return MSE here
+	return vector<float>(5, 0);
 }
 void NN::PrintStructure() {
 	for (auto l : this->structure) {
