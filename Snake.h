@@ -11,15 +11,14 @@ struct Segment {
 	pair<int, int> pos;
 };
 class Snake {
-private:
-	const int start_length = 3;
-	pair<int, int> size;
-	void CreateApple();
 public:
 	Snake(pair<int, int> size);
+	const int start_length = 3;
 	void Move(Direction direction);
 	vector<vector<int>> State();
 	void Reset();
+	void CreateApple();
+	pair<int, int> size;
 	bool inGame = true;
 	vector<Segment> body = { };
 	pair<int, int> apple;

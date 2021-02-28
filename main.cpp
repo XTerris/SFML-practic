@@ -6,34 +6,38 @@
 #include <iostream>
 using namespace sf;
 using namespace std;
-void Draw(RenderWindow& window, Snake& snake, const float segmentSize) {
-	vector<vector<int>> state = snake.State();
-	const int scoreMargin = 2;
-	window.clear();
-	for (size_t i = 0; i < snake.body.size(); ++i) {
+void Draw(RenderWindow& window, Snake& snake, const float segmentSize, bool All = true) {
+	if (All) {
+		const int scoreMargin = 2;
+		window.clear();
+		for (size_t i = 0; i < snake.body.size(); ++i) {
 
-		RectangleShape bodySegment(Vector2f(segmentSize, segmentSize));
-		bodySegment.setFillColor(Color::Green);
-		bodySegment.setOutlineThickness(1);
-		bodySegment.setOutlineColor(Color::Black);
-		bodySegment.setPosition(Vector2f(segmentSize * snake.body[i].pos.first, segmentSize * (snake.body[i].pos.second + scoreMargin)));
-		window.draw(bodySegment);
+			RectangleShape bodySegment(Vector2f(segmentSize, segmentSize));
+			bodySegment.setFillColor(Color::Green);
+			bodySegment.setOutlineThickness(1);
+			bodySegment.setOutlineColor(Color::Black);
+			bodySegment.setPosition(Vector2f(segmentSize * snake.body[i].pos.first, segmentSize * (snake.body[i].pos.second + scoreMargin)));
+			window.draw(bodySegment);
+		}
+		CircleShape apple(segmentSize / 2);
+		apple.setFillColor(Color::Red);
+		apple.setPosition(Vector2f(segmentSize * snake.apple.first, segmentSize * (snake.apple.second + scoreMargin)));
+		window.draw(apple);
+		RectangleShape interface(Vector2f(segmentSize * snake.size.first, scoreMargin * segmentSize));
+		interface.setFillColor(Color(28, 28, 28));
+		window.draw(interface);
+		Font font;
+		font.loadFromFile("Font.ttf");
+		Text score("", font, (unsigned int)segmentSize * scoreMargin - 10);
+		score.setString("Score: " + to_string(snake.Score));
+		score.setFillColor(Color::White);
+		score.setPosition(Vector2f(10, 0));
+		window.draw(score);
+		window.display();
 	}
-	CircleShape apple(segmentSize / 2);
-	apple.setFillColor(Color::Red);
-	apple.setPosition(Vector2f(segmentSize * snake.apple.first, segmentSize * (snake.apple.second + scoreMargin)));
-	window.draw(apple);
-	RectangleShape interface(Vector2f(segmentSize * state.size(), scoreMargin * segmentSize));
-	interface.setFillColor(Color(28, 28, 28));
-	window.draw(interface);
-	Font font;
-	font.loadFromFile("Font.ttf");
-	Text score("", font, (unsigned int)segmentSize * scoreMargin - 10);
-	score.setString("Score: " + to_string(snake.Score));
-	score.setFillColor(Color::White);
-	score.setPosition(Vector2f(10, 0));
-	window.draw(score);
-	window.display();
+	else {
+
+	}
 }
 int main()
 {

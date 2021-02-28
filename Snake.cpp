@@ -16,7 +16,7 @@ void Snake::Move(Direction direction) {
 		this->inGame = false;
 		return;
 	}
-	for (int i = 1; i < this->body.size(); ++i) {
+	for (size_t i = 1; i < this->body.size(); ++i) {
 		this->body[i - 1] = this->body[i]; // moving segments without head
 	}
 	switch (direction) { // moving of head
