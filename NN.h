@@ -13,5 +13,6 @@ private:
 public:
 	NN(vector<int> structure);
 	vector<float> FeedForward(vector<float> input);
+	vector<float> getMSE(vector<float> input, vector<float> right_output);
 	void PrintStructure();
 };

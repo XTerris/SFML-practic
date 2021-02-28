@@ -44,8 +44,10 @@ vector<float> NN::FeedForward(vector<float> input) {
 	vector<float> output(this->structure[this->structure.size() - 1].size());
 	for (int i = 0; i < output.size(); ++i)
 		output[i] = this->structure[this->structure.size() - 1][i].output;
-	return output;
-	
+	return output;	
+}
+vector<float> getMSE(vector<float> input, vector<float> right_output) {
+	// compute and return MSE here
 }
 void NN::PrintStructure() {
 	for (auto l : this->structure) {
