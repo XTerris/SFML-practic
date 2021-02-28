@@ -10,24 +10,19 @@ void Draw(RenderWindow& window, Snake& snake, const float segmentSize) {
 	vector<vector<int>> state = snake.State();
 	const int scoreMargin = 2;
 	window.clear();
-	for (size_t i = 0; i < state.size(); ++i) {
-		for (size_t j = 0; j < state[0].size(); ++j) {
-			if (state[i][j] == 1) {
-				RectangleShape bodySegment(Vector2f(segmentSize, segmentSize));
-				bodySegment.setFillColor(Color::Green);
-				bodySegment.setOutlineThickness(1);
-				bodySegment.setOutlineColor(Color::Black);
-				bodySegment.setPosition(Vector2f(segmentSize * i, segmentSize * (j + scoreMargin)));
-				window.draw(bodySegment);
-			}
-			else if (state[i][j] == 2) {
-				CircleShape apple(segmentSize / 2);
-				apple.setFillColor(Color::Red);
-				apple.setPosition(Vector2f(segmentSize * i, segmentSize * (j + scoreMargin)));
-				window.draw(apple);
-			}
-		}
+	for (size_t i = 0; i < snake.body.size(); ++i) {
+
+		RectangleShape bodySegment(Vector2f(segmentSize, segmentSize));
+		bodySegment.setFillColor(Color::Green);
+		bodySegment.setOutlineThickness(1);
+		bodySegment.setOutlineColor(Color::Black);
+		bodySegment.setPosition(Vector2f(segmentSize * snake.body[i].pos.first, segmentSize * (snake.body[i].pos.second + scoreMargin)));
+		window.draw(bodySegment);
 	}
+	CircleShape apple(segmentSize / 2);
+	apple.setFillColor(Color::Red);
+	apple.setPosition(Vector2f(segmentSize * snake.apple.first, segmentSize * (snake.apple.second + scoreMargin)));
+	window.draw(apple);
 	RectangleShape interface(Vector2f(segmentSize * state.size(), scoreMargin * segmentSize));
 	interface.setFillColor(Color(28, 28, 28));
 	window.draw(interface);
