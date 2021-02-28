@@ -8,27 +8,30 @@ Snake::Snake(pair<int, int> size) {
 	this->CreateApple();
 }
 void Snake::Move(Direction direction) {
+	size_t head = this->body.size() - 1;
+	if (direction == Direction::Up && this->body[head].second == 0 ||
+		direction == Direction::Down && this->body[head].second == this->size.second - 1 ||
+		direction == Direction::Left && this->body[head].first == 0 ||
+		direction == Direction::Right && this->body[head].first == this->size.first - 1) {
+		this->inGame = false;
+		return;
+	}
 	for (int i = 1; i < this->body.size(); ++i) {
 		this->body[i - 1] = this->body[i]; // moving segments without head
 	}
-	size_t head = this->body.size() - 1;
 	switch (direction) { // moving of head
-		case Direction::Up:
-			if (this->body[head].second == 0) inGame = false;
-			else this->body[head].second -= 1;
-			break;
-		case Direction::Down:
-			if (this->body[head].second == this->size.second - 1) inGame = false;
-			else this->body[head].second += 1;
-			break;
-		case Direction::Right:
-			if (this->body[head].first == this->size.first - 1) inGame = false;
-			else this->body[head].first += 1;
-			break;
-		case Direction::Left:
-			if (this->body[head].first == 0) inGame = false;
-			else this->body[head].first -= 1;
-			break;
+	case Direction::Up:
+		this->body[head].second -= 1;
+		break;
+	case Direction::Down:
+		this->body[head].second += 1;
+		break;
+	case Direction::Right:
+		this->body[head].first += 1;
+		break;
+	case Direction::Left:
+		this->body[head].first -= 1;
+		break;
 	}
 	if (this->body[head].first < 0 || this->body[head].first >= this->size.first || this->body[head].second < 0 || this->body[head].second >= this->size.second)
 		this->inGame = false; // if wend outside
@@ -58,4 +61,12 @@ void Snake::CreateApple() {
 			return;
 		}
 	}
+}
+void Snake::Reset() {
+	this->body.clear();
+	for (int i = this->start_length; i > 0; --i)
+		this->body.push_back(make_pair(this->size.first / 2, this->size.second / 2 + i));
+	this->CreateApple();
+	this->inGame = true;
+	this->score = 0;
 }

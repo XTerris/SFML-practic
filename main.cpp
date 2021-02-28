@@ -3,6 +3,7 @@
 #include "Snake.h"
 #include "NN.h"
 #include <vector>
+#include <iostream>
 using namespace sf;
 using namespace std;
 void Draw(RenderWindow& window, Snake& snake, const float segmentSize) {
@@ -42,45 +43,45 @@ void Draw(RenderWindow& window, Snake& snake, const float segmentSize) {
 int main()
 {
 	const pair<int, int> areaSize = make_pair(30, 20);
-	const float speed = 7;
 	const int segmentSize = 30;
 	const int scoreMargin = 2;
+	const int speed = 7;
+	bool pause = false;
+	bool active = true;
 	Snake snake(areaSize);
-	RenderWindow window(VideoMode(areaSize.first * segmentSize, (areaSize.second + scoreMargin) * segmentSize), "Snake");
+	ContextSettings settings;
+	settings.antialiasingLevel = 4;
+	RenderWindow window(VideoMode(areaSize.first * segmentSize, (areaSize.second + scoreMargin) * segmentSize), "Snake", Style::Default, settings);
 	Direction dir = Direction::Up;
-	clock_t last_clock = clock();
-	while (true) {
+	Clock timer;
+	while (active) {
 		Event event = Event();
 		while (window.pollEvent(event)) {
-			if (event.type == Event::Closed) window.close();
-			else { // turns with arrow keys
-				switch (event.key.code) {
-				case 71:
-					dir = dir == Direction::Right ? dir : Direction::Left;
-					break;
-				case 72:
-					dir = dir == Direction::Left ? dir : Direction::Right;
-					break;
-				case 73:
-					dir = dir == Direction::Down ? dir : Direction::Up;
-					break;
-				case 74:
-					dir = dir == Direction::Up ? dir : Direction::Down;;
-					break;
-				}
+			if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape)) {
+				window.close();
+				active = false;
 			}
+			else if (Keyboard::isKeyPressed(Keyboard::Space) && !snake.inGame) {
+				snake.Reset();
+				dir = Direction::Up;
+			}
+			else if (Keyboard::isKeyPressed(Keyboard::Left))
+				dir = dir == Direction::Right ? dir : Direction::Left;
+			else if (Keyboard::isKeyPressed(Keyboard::Right))
+				dir = dir == Direction::Left ? dir : Direction::Right;
+			else if (Keyboard::isKeyPressed(Keyboard::Up))
+				dir = dir == Direction::Down ? dir : Direction::Up;
+			else if (Keyboard::isKeyPressed(Keyboard::Down))
+				dir = dir == Direction::Up ? dir : Direction::Down;
+			else if (Keyboard::isKeyPressed(Keyboard::Pause)) pause = !pause;
 		}
-		if (snake.inGame) {
-			if ((float)(clock() - last_clock) / CLOCKS_PER_SEC > 1.0 / speed) {
+		if (snake.inGame && !pause) {
+			if (timer.getElapsedTime().asMilliseconds() > 1000 / (float)speed) {
 				snake.Move(dir);
-				last_clock = clock();
 				Draw(window, snake, segmentSize);
+				timer.restart();
 			}
 		}
-		else {
-			window.close();
-			break;
-		};
 	}
 	return 0;
 }

@@ -15,14 +15,14 @@ NN::NN(vector<int> structure) {
 		this->structure.push_back(vector<Neuron>(l, Neuron()));
 		size_t size = this->structure.size(); // count of filled layers
 		if (size == 1) continue; // if firts layer continue
-		for (auto &n : this->structure[size - 1]) { // else for each neuron
+		for (auto& n : this->structure[size - 1]) { // else for each neuron
 			n.weights = vector<float>(this->structure[size - 2].size());
-			for (auto &i : n.weights) i = (float)rand() / RAND_MAX; // set random weights
+			for (auto& i : n.weights) i = (float)rand() / RAND_MAX; // set random weights
 		}
 	}
 }
 vector<float> NN::FeedForward(vector<float> input) {
-	if (input.size() != this->structure[0].size()) // throw exception if input is of invalid size
+	if (input.size() != this->structure[0].size())
 		throw invalid_argument("Invalid size of input");
 	for (size_t l = 0; l < this->structure.size(); ++l) { // each layer
 		if (l == 0) { // first layer
@@ -44,10 +44,19 @@ vector<float> NN::FeedForward(vector<float> input) {
 	vector<float> output(this->structure[this->structure.size() - 1].size());
 	for (size_t i = 0; i < output.size(); ++i)
 		output[i] = this->structure[this->structure.size() - 1][i].output;
-	return output;	
+	return output;
 }
-vector<float> getMSE(vector<float> input, vector<float> right_output) {
-	return vector<float>(5, 0);
+float NN::getMSE(vector<float> input, vector<float> right_output) {
+	vector<float> output = this->FeedForward(input);
+	if (right_output.size() != output.size())
+		throw invalid_argument("Invalid size of right_output");
+	vector<float> error(output.size());
+	float sum = 0;
+	for (size_t i = 0; i < output.size(); ++i) {
+		error[i] = (right_output[i] - output[i]) * (right_output[i] - output[i]);
+		sum += error[i];
+	}
+	return sum / error.size();
 }
 void NN::PrintStructure() {
 	for (auto l : this->structure) {

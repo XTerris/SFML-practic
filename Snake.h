@@ -19,5 +19,6 @@ public:
 	int Score() { return this->score; };
 	void Move(Direction direction);
 	vector<vector<int>> State();
+	void Reset();
 	bool inGame = true;
 };
