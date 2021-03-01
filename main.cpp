@@ -16,12 +16,29 @@ void Draw(RenderWindow& window, Snake& snake, const float segmentSize, float mov
 		window.draw(bodySegment);
 	}
 	Segment head = snake.body[snake.body.size() - 1];
-	if (head.dir == Direction::Down || head.dir == Direction::Up) {
+	if (head.dir == Direction::Down || head.dir == Direction::Up)
 		bodySegment.setSize(Vector2f(segmentSize, segmentSize * moveProgress));
-	}
-	if (head.dir == Direction::Up) bodySegment.setPosition(Vector2f(segmentSize * head.pos.first, segmentSize * (head.pos.second + scoreMargin - moveProgress + 1)));
+	else
+		bodySegment.setSize(Vector2f(segmentSize * moveProgress, segmentSize));
+	if (head.dir == Direction::Up)
+		bodySegment.setPosition(Vector2f(segmentSize * head.pos.first, segmentSize * (head.pos.second + scoreMargin - moveProgress + 1)));
+	else if (head.dir == Direction::Down || head.dir == Direction::Right)
+		bodySegment.setPosition(Vector2f(segmentSize * head.pos.first, segmentSize * (head.pos.second + scoreMargin)));
+	else if (head.dir == Direction::Left)
+		bodySegment.setPosition(Vector2f(segmentSize * (head.pos.first - moveProgress + 1), segmentSize * (head.pos.second + scoreMargin)));
 	window.draw(bodySegment);
-	// TODO: draw head and tail
+	Segment tail = snake.body[0];
+	if (tail.dir == Direction::Down || tail.dir == Direction::Up)
+		bodySegment.setSize(Vector2f(segmentSize, segmentSize * (1 - moveProgress)));
+	else
+		bodySegment.setSize(Vector2f(segmentSize * (1 - moveProgress), segmentSize));
+	if (tail.dir == Direction::Up || tail.dir == Direction::Left)
+		bodySegment.setPosition(Vector2f(segmentSize * tail.pos.first, segmentSize * (tail.pos.second + scoreMargin)));
+	else if (tail.dir == Direction::Down)
+		bodySegment.setPosition(Vector2f(segmentSize * tail.pos.first, segmentSize * (tail.pos.second + scoreMargin + moveProgress)));
+	else if (tail.dir == Direction::Right)
+		bodySegment.setPosition(Vector2f(segmentSize * (tail.pos.first + moveProgress), segmentSize * (tail.pos.second + scoreMargin)));
+	window.draw(bodySegment);
 
 	CircleShape apple(segmentSize / 2);
 	apple.setFillColor(Color::Red);
@@ -44,7 +61,7 @@ int main()
 	const pair<int, int> areaSize = make_pair(30, 20);
 	const int segmentSize = 30;
 	const int scoreMargin = 2;
-	const float speed = 0.5;
+	const float speed = 7;
 	bool pause = false;
 	bool active = true;
 	Snake snake(areaSize);
@@ -73,7 +90,8 @@ int main()
 				dir = dir == Direction::Down ? dir : Direction::Up;
 			else if (Keyboard::isKeyPressed(Keyboard::Down))
 				dir = dir == Direction::Up ? dir : Direction::Down;
-			else if (Keyboard::isKeyPressed(Keyboard::Pause)) pause = !pause;
+			else if (Keyboard::isKeyPressed(Keyboard::Pause))
+				pause = !pause;
 		}
 		if (snake.inGame && !pause) {
 			if (moveTimer.getElapsedTime().asMilliseconds() >= 1000 / speed / segmentSize) {

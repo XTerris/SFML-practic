@@ -19,29 +19,23 @@ void Snake::Move(Direction direction) {
 	for (size_t i = 1; i < this->body.size(); ++i) {
 		this->body[i - 1] = this->body[i]; // moving segments without head
 	}
-	switch (direction) { // moving of head
-	case Direction::Up:
+	if (direction == Direction::Up)
 		this->body[head].pos.second -= 1;
-		break;
-	case Direction::Down:
+	else if (direction == Direction::Down)
 		this->body[head].pos.second += 1;
-		break;
-	case Direction::Right:
+	else if (direction == Direction::Right)
 		this->body[head].pos.first += 1;
-		break;
-	case Direction::Left:
+	else if (direction == Direction::Left)
 		this->body[head].pos.first -= 1;
-		break;
-	}
-	if (this->body[head].pos.first < 0 || this->body[head].pos.first >= this->size.first ||
-		this->body[head].pos.second < 0 || this->body[head].pos.second >= this->size.second)
-		this->inGame = false; // if wend outside
-	else if (this->body[head].pos == this->apple) { // add segments if apple was eated
+
+	if (this->body[head].pos == this->apple) { // add segments if apple was eated
 		this->body.insert(this->body.begin(), this->body[0]);
 		this->Score += 1;
 		this->CreateApple();
 	}
 	head = this->body.size() - 1; // coordinates of head
+	this->body[head].dir = direction;
+	this->body[0].dir = this->body[1].dir;
 	for (size_t i = 0; i < head; ++i) // if crashed
 		if (this->body[i].pos == this->body[head].pos) this->inGame = false;
 }
