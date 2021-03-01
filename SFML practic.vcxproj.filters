@@ -33,4 +33,29 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="Font.ttf">
+      <Filter>Файлы ресурсов</Filter>
+    </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="openal32.dll">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="sfml-audio-2.dll">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="sfml-graphics-2.dll">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="sfml-network-2.dll">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="sfml-system-2.dll">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="sfml-window-2.dll">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+  </ItemGroup>
 </Project>
