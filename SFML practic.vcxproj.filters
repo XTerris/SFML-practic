@@ -57,5 +57,20 @@
     <None Include="sfml-window-2.dll">
       <Filter>Файлы ресурсов</Filter>
     </None>
+    <None Include="sfml-audio-d-2.dll">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="sfml-graphics-d-2.dll">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="sfml-network-d-2.dll">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="sfml-system-d-2.dll">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="sfml-window-d-2.dll">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
   </ItemGroup>
 </Project>
