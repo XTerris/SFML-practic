@@ -107,6 +107,10 @@
       <AdditionalLibraryDirectories>$(SolutionDir)SFML-2.5.1\lib;F:\SFML practic\SFML-2.5.1\lib;C:\Users\PC\source\repos\SFML practic\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-audio-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -127,6 +131,12 @@
       <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-system.lib;sfml-audio.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)SFML-2.5.1\lib</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>mkdir "$(SolutionDir)Output"
+copy "$(SolutionDir)Release\*.exe" "$(SolutionDir)Output"
+copy "$(SolutionDir)Release\*.dll" "$(SolutionDir)Output"
+copy "$(SolutionDir)Release\*.ttf" "$(SolutionDir)Output"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -143,6 +153,10 @@
       <AdditionalLibraryDirectories>$(SolutionDir)SFML-2.5.1\lib;C:\Users\PC\source\repos\SFML practic\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-audio-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -163,6 +177,12 @@
       <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-system.lib;sfml-audio.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)SFML-2.5.1\lib</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>mkdir "$(SolutionDir)Output"
+copy "$(SolutionDir)Release\*.exe" "$(SolutionDir)Output"
+copy "$(SolutionDir)Release\*.dll" "$(SolutionDir)Output"
+copy "$(SolutionDir)Release\*.ttf" "$(SolutionDir)Output"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
