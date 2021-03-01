@@ -61,7 +61,7 @@ int main()
 	const pair<int, int> areaSize = make_pair(30, 20);
 	const int segmentSize = 30;
 	const int scoreMargin = 2;
-	const float speed = 7;
+	float speed = 7;
 	bool pause = false;
 	bool active = true;
 	Snake snake(areaSize);
@@ -92,6 +92,10 @@ int main()
 				dir = dir == Direction::Up ? dir : Direction::Down;
 			else if (Keyboard::isKeyPressed(Keyboard::Pause))
 				pause = !pause;
+			if (Keyboard::isKeyPressed(Keyboard::Add))
+				speed += 1;
+			if (Keyboard::isKeyPressed(Keyboard::Subtract))
+				speed = max((float)1, speed - 1);
 		}
 		if (snake.inGame && !pause) {
 			if (moveTimer.getElapsedTime().asMilliseconds() >= 1000 / speed / segmentSize) {
