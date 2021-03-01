@@ -95,11 +95,11 @@ int main()
 		}
 		if (snake.inGame && !pause) {
 			if (moveTimer.getElapsedTime().asMilliseconds() >= 1000 / speed / segmentSize) {
+				Draw(window, snake, segmentSize, timer.getElapsedTime().asMilliseconds() / (float)1000 * speed);
 				if (timer.getElapsedTime().asMilliseconds() >= 1000 / speed) {
 					snake.Move(dir);
 					timer.restart();
 				}
-				Draw(window, snake, segmentSize, timer.getElapsedTime().asMilliseconds() / (float)1000 * speed);
 				moveTimer.restart();
 			}
 		}
