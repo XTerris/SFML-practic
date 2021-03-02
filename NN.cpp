@@ -50,9 +50,10 @@ vector<float> NN::FeedForward(vector<float> input) {
 	return output;
 }
 void NN::Train(vector<float> input, vector<float> right_output) {
+	// TODO: OPTIMIZE THIS FUNCTION
 	vector<float> output = this->FeedForward(input);
 	for (size_t i = 0; i < this->structure[this->structure.size() - 1].size(); ++i) {
-		Neuron n = this->structure[this->structure.size() - 1][i];
+		Neuron& n = this->structure[this->structure.size() - 1][i];
 		n.error = this->Error(n.output, right_output[i]);
 	}
 	for (int l = (int)this->structure.size() - 2; l >= 0; --l) { // each layer from last to second
@@ -66,7 +67,9 @@ void NN::Train(vector<float> input, vector<float> right_output) {
 	for (size_t l = 1; l < this->structure.size(); ++l) { // each layer
 		for (size_t n = 0; n < this->structure[l].size(); ++n) { // each neuron of current layer
 			for (size_t i = 0; i < this->structure[l - 1].size(); ++i) { // each neuron of last layer
-
+				float grad = this->structure[l][n].error * this->A *
+					this->Derivative(this->structure[l][n].input) * this->structure[l - 1][i].output;
+				this->structure[l][n].weights[i] += grad;
 			}
 		}
 	}
