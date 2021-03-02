@@ -9,6 +9,9 @@ float NN::Activation(float x) {
 float NN::Derivative(float x) {
 	return x < 0 ? (float)0.01 : 1; // LeakyReLU's derivative
 }
+float NN::Error(float x, float y) {
+	return (x - y) * (x - y); // MSE
+}
 NN::NN(vector<int> structure) {
 	srand((unsigned int)time(NULL));
 	for (auto l : structure) { // filling structure with neurons
@@ -46,10 +49,18 @@ vector<float> NN::FeedForward(vector<float> input) {
 		output[i] = this->structure[this->structure.size() - 1][i].output;
 	return output;
 }
+void NN::Train(vector<float> input, vector<float> right_output) {
+	vector<float> output = this->FeedForward(input);
+	for (size_t i = 0; i < this->structure[this->structure.size() - 1].size(); ++i) {
+		Neuron n = this->structure[this->structure.size() - 1][i];
+		n.error = this->Error(n.output, right_output[i]);
+	}
+	for (size_t i = this->structure[this->structure.size() - 1].size() - 1; i > 0; --i) { // each layer from last to second
+
+	}
+}
 float NN::getMSE(vector<float> input, vector<float> right_output) {
 	vector<float> output = this->FeedForward(input);
-	if (right_output.size() != output.size())
-		throw invalid_argument("Invalid size of right_output");
 	vector<float> error(output.size());
 	float sum = 0;
 	for (size_t i = 0; i < output.size(); ++i) {
