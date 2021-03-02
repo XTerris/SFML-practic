@@ -60,8 +60,10 @@ int main()
 {
 	NN n({ 2, 3, 1 });
 	vector<float> input = { 0, 1 };
+	vector<float> output = { 1 };
 	for (auto i : n.FeedForward(input))
 		cout << i << " ";
+	n.Train(input, output);
 	return 0;
 	const pair<int, int> areaSize = make_pair(30, 20);
 	const int segmentSize = 30;

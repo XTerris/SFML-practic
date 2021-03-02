@@ -55,8 +55,20 @@ void NN::Train(vector<float> input, vector<float> right_output) {
 		Neuron n = this->structure[this->structure.size() - 1][i];
 		n.error = this->Error(n.output, right_output[i]);
 	}
-	for (size_t i = this->structure[this->structure.size() - 1].size() - 1; i > 0; --i) { // each layer from last to second
+	for (int l = (int)this->structure.size() - 2; l >= 0; --l) { // each layer from last to second
+		for (size_t n = 0; n < this->structure[l].size(); ++n) { // each neuron
+			float error = 0;
+			for (auto i : this->structure[l + 1])
+				error += i.error * i.weights[n];
+			this->structure[l][n].error = error;
+		}
+	}
+	for (size_t l = 1; l < this->structure.size(); ++l) { // each layer
+		for (size_t n = 0; n < this->structure[l].size(); ++n) { // each neuron of current layer
+			for (size_t i = 0; i < this->structure[l - 1].size(); ++i) { // each neuron of last layer
 
+			}
+		}
 	}
 }
 float NN::getMSE(vector<float> input, vector<float> right_output) {
