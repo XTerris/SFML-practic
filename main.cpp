@@ -58,16 +58,6 @@ void Draw(RenderWindow& window, Snake& snake, const float segmentSize, float mov
 }
 int main()
 {
-	NN n({ 2, 3, 4, 2 });
-	vector<float> input = { 0, 1 };
-	vector<float> output = { 1, 0 };
-	for (int i = 0; i < 10; i++) {
-		for (auto i : n.FeedForward(input))
-			cout << i << " ";
-		n.Train(input, output);
-		cout << endl;
-	}
-	return 0;
 	const pair<int, int> areaSize = make_pair(30, 20);
 	const int segmentSize = 30;
 	const int scoreMargin = 2;
