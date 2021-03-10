@@ -186,11 +186,9 @@ copy "$(SolutionDir)Release\*.ttf" "$(SolutionDir)Output"</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="NN.cpp" />
     <ClCompile Include="Snake.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="NN.h" />
     <ClInclude Include="Snake.h" />
   </ItemGroup>
   <ItemGroup>

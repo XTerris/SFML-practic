@@ -1,7 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Snake.h"
-#include "NN.h"
 #include <vector>
 #include <iostream>
 using namespace sf;
@@ -98,6 +97,28 @@ int main()
 				speed = max((float)1, speed - 1);
 		}
 		if (snake.inGame && !pause) {
+			int d, reward;
+			int score = snake.Score;
+			cin >> d;
+			if (d == 0) dir = Direction::Up;
+			else if (d == 1) dir = Direction::Right;
+			else if (d == 2) dir = Direction::Down;
+			else if (d == 3) dir = Direction::Left;
+			snake.Move(dir);
+			Draw(window, snake, segmentSize, 1);
+			if (snake.Score > score)
+				reward = 10;
+			else if (snake.inGame)
+				reward = -1;
+			else
+				reward = -10;
+			cout << reward << " " << d << " ";
+			for (auto j : snake.State()) {
+				for (auto i : j)
+					cout << i << " ";
+			}
+			cout << endl;
+			continue;
 			if (moveTimer.getElapsedTime().asMilliseconds() >= 1000 / speed / segmentSize) {
 				Draw(window, snake, segmentSize, timer.getElapsedTime().asMilliseconds() / (float)1000 * speed);
 				if (timer.getElapsedTime().asMilliseconds() >= 1000 / speed) {
@@ -107,6 +128,8 @@ int main()
 				moveTimer.restart();
 			}
 		}
+		else
+			snake.Reset();
 	}
 	return 0;
 }

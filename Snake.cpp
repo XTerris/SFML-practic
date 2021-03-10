@@ -40,11 +40,13 @@ void Snake::Move(Direction direction) {
 		if (this->body[i].pos == this->body[head].pos) this->inGame = false;
 }
 vector<vector<int>> Snake::State() {
-	// fill matrix of areaSize with "0" as empty square, "1" as snake's segment and "2" as apple
+	// fill matrix of areaSize with "0" as empty square, "1" as snake's segment, "2" as head and "3" as apple
 	vector<vector<int>> state(this->size.first, vector<int>(this->size.second, 0));
 	for (auto i : this->body)
 		state[i.pos.first][i.pos.second] = 1;
-	state[this->apple.first][this->apple.second] = 2;
+	Segment& head = this->body[this->body.size() - 1];
+	state[head.pos.first][head.pos.second] = 2;
+	state[this->apple.first][this->apple.second] = 3;
 	return state;
 }
 void Snake::CreateApple() {
